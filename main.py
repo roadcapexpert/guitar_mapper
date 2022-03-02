@@ -2,7 +2,6 @@
 # - enforce odd fret width only
 # - make major/minor selectable
 # - add argeparser
-# - change root note
 
 import math
 
@@ -61,6 +60,7 @@ class FretBoard():
         """ Checks if note is in scale and creates the string drawing """
 
         if note in scale:
+            # I wanted the root note to be a different character
             if note == scale[0]:
                 string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.root_tab + (
                             self.empty_tab * (math.trunc(self.fret_width / 2)))
@@ -75,6 +75,7 @@ class FretBoard():
     def compile_scale(self):
         """ Determines the notes in the scale for a given key """
 
+        # 2 = whole step, 1 = half step
         major_scale = [2, 2, 1, 2, 2, 2, 1]
         minor_scale = [2, 1, 2, 2, 1, 2, 2]
         scale = [self.key]
