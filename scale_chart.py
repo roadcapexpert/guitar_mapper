@@ -1,26 +1,31 @@
-#TODO
-# - enforce odd fret width only
-# - make major/minor selectable
-# - add argeparser
-
 import math
+
+scale_types = [{"type": "major", "scale_steps": [2, 2, 1, 2, 2, 2, 1]},
+               {"type": "minor", "scale_steps": [2, 1, 2, 2, 1, 2, 2]}]
+key_notes = [{"key": "A", "key_display": "A"},
+             {"key": "A#", "key_display": "A♯ / B♭"},
+             {"key": "B", "key_display": "B"},
+             {"key": "C", "key_display": "C"},
+             {"key": "C#", "key_display": "C♯ / D♭"},
+             {"key": "D", "key_display": "D"},
+             {"key": "D#", "key_display": "D♯ / E♭"},
+             {"key": "E", "key_display": "E"},
+             {"key": "F", "key_display": "F"},
+             {"key": "F#", "key_display": "F♯ / G♭"},
+             {"key": "G", "key_display": "G"},
+             {"key": "G#", "key_display": "G♯ / A♭"}]
+notes = [d["key"] for d in key_notes]
 
 
 class FretBoard:
 
-    def __init__(self):
-
-        self.edge = "="
+    def __init__(self, key_note="A", scale_type="major", fret_num=22):
         self.fret = "|"
         self.note_tab = "0"
         self.root_tab = "X"
         self.empty_tab = "-"
-        self.fret_num = 22
+        self.fret_num = fret_num
         self.fret_width = 7
-
-        self.major = True
-        self.key = "G"
-        self.notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"]
         self.tuning = {
             1: "E",
             2: "B",
@@ -38,6 +43,13 @@ class FretBoard:
             6: ""
         }
 
+        self.scale_type = scale_type
+
+        if key_note in notes:
+            self.key_note = key_note
+        else:
+            raise RuntimeError("Invalid root note")
+
     def create_fretboard(self):
         """ Compile the fretboard """
         scale = self.compile_scale()
@@ -47,8 +59,8 @@ class FretBoard:
             for string in self.neck:
                 # determine current note
                 open_note = self.tuning[string]
-                open_note_index = self.notes.index(open_note)
-                current_note = self.notes[(open_note_index + current_fret + 1) % len(self.notes)]
+                open_note_index = notes.index(open_note)
+                current_note = notes[(open_note_index + current_fret + 1) % len(notes)]
 
                 # add to string
                 string_so_far = self.neck[string]
@@ -76,22 +88,16 @@ class FretBoard:
     def compile_scale(self):
         """ Determines the notes in the scale for a given key """
 
-        # 2 = whole step, 1 = half step
-        major_scale = [2, 2, 1, 2, 2, 2, 1]
-        minor_scale = [2, 1, 2, 2, 1, 2, 2]
+        scale_dict = [x for x in scale_types if x["type"] == self.scale_type][0]
+        scale_steps = scale_dict["scale_steps"]
 
-        if self.major:
-            scale_steps = major_scale
-        else:
-            scale_steps = minor_scale
-
-        scale = [self.key]
+        scale = [self.key_note]
 
         i = 0
         while i < len(scale_steps):
-            current_note_index = self.notes.index(scale[i])
+            current_note_index = notes.index(scale[i])
             next_step = scale_steps[i]
-            next_note = self.notes[(current_note_index + next_step) % len(self.notes)]
+            next_note = notes[(current_note_index + next_step) % len(notes)]
             scale.append(next_note)
             i += 1
 
@@ -107,14 +113,5 @@ class FretBoard:
         self.create_fretboard()
 
         # draw neck
-        print(*[str(v) for k,v in self.neck.items()], sep='\n')
-
-
-def main():
-    FretBoard().draw_neck()
-
-
-if __name__ == '__main__':
-    main()
-
-
+        print(*[str(v) for k, v in self.neck.items()], sep='\n')
+        return self.neck

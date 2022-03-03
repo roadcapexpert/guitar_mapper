@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scale Chart</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Scale Chart</h1>
+    <!--{% block title %}Options{% endblock %}-->
+    {% block content %}
+
+    <form method="post" action="#">
+        <label>Choose a key:</label>
+        <select name="key_note_select" class="Input">
+            {% for o in key_note_data %}
+            <option value="{{ o['key'] }}">{{ o['key_display'] }}</option>
+            {% endfor %}
+        </select>
+        <select name="scale_type_select" class="Input">
+            {% for o in scale_type_data %}
+            <option value="{{ o['type'] }}">{{ o['type'] }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+        <input type="submit" value="Draw" name="submit"/>
+    </form>
+
+    {% endblock %}
+    <br>
+    {% for k, v in tab.items() %}
+    <div class="tab">{{ v }}</div>
+    <br>
+    {% endfor %}
+</body>
+</html>
