@@ -6,7 +6,7 @@
 import math
 
 
-class FretBoard():
+class FretBoard:
 
     def __init__(self):
 
@@ -18,6 +18,7 @@ class FretBoard():
         self.fret_num = 22
         self.fret_width = 7
 
+        self.major = True
         self.key = "G"
         self.notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"]
         self.tuning = {
@@ -78,12 +79,18 @@ class FretBoard():
         # 2 = whole step, 1 = half step
         major_scale = [2, 2, 1, 2, 2, 2, 1]
         minor_scale = [2, 1, 2, 2, 1, 2, 2]
+
+        if self.major:
+            scale_steps = major_scale
+        else:
+            scale_steps = minor_scale
+
         scale = [self.key]
 
         i = 0
-        while i < len(major_scale):
+        while i < len(scale_steps):
             current_note_index = self.notes.index(scale[i])
-            next_step = major_scale[i]
+            next_step = scale_steps[i]
             next_note = self.notes[(current_note_index + next_step) % len(self.notes)]
             scale.append(next_note)
             i += 1
