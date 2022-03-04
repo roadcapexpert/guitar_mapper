@@ -23,7 +23,7 @@ notes = [d["key"] for d in key_notes]
 
 
 class FretBoard:
-    #TODO change scale_types to use id, maybe put in database
+    # TODO change scale_types to use id, maybe put in database
     def __init__(self, key_note="A", scale_type="Major (Ionian)", fret_num=22):
         self.fret = "|"
         self.note_tab = "0"
@@ -79,6 +79,7 @@ class FretBoard:
 
         if note in scale:
             # I wanted the root note to be a different character
+            # TODO refactor to remove duplicate code below
             if note == scale[0]:
                 string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.root_tab + (
                             self.empty_tab * (math.trunc(self.fret_width / 2)))
@@ -108,6 +109,15 @@ class FretBoard:
 
         return scale
 
+    def add_inlay_markers(self):
+        inlay_frets = [3, 5, 7, 9, 12, 15, 17, 19, 21]
+        inlay_list = ["&nbsp;"] * ((self.fret_width * self.fret_num) + (self.fret_num + 1))
+        for inlay in inlay_frets:
+            position = math.trunc(self.fret_width * (inlay - 0.5)) + inlay
+            inlay_list[position] = "&bull;"
+        inlay_markers = "".join(inlay_list)
+        self.neck[7] = inlay_markers
+
     def draw_neck(self):
         """ Does the actual drawing of the neck """
 
@@ -116,6 +126,7 @@ class FretBoard:
             self.neck[string] = self.fret
 
         self.create_fretboard()
+        self.add_inlay_markers()
 
         # draw neck
         print(*[str(v) for k, v in self.neck.items()], sep='\n')

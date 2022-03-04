@@ -1,8 +1,5 @@
-#TODO
-# - logging
-# - enhance CSS
-# - add more scale types (modes)
-# - dockerize
+# TODO add logging
+
 import sqlite3
 import os
 from flask import Flask, render_template, request, current_app, g
@@ -65,4 +62,3 @@ def close_db(e=None):
 
     if db is not None:
         db.close()
-

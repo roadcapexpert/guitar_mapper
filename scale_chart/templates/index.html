@@ -33,7 +33,7 @@
     <br>
     <br>
     {% for k, v in tab.items() %}
-    <div class="tab">{{ v }}</div>
+    <div class="tab">{{ v|safe }}</div>
     <br>
     {% endfor %}
 </body>
