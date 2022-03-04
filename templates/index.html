@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>Scale Chart</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='guitar-solid.svg') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Scale Chart</h1>
+    <h1 class="title">Scale Chart</h1>
     <!--{% block title %}Options{% endblock %}-->
     {% block content %}
 
-    <form method="post" action="#">
+    <form method="post" action="#" class="form-1">
         <label>Choose a key:</label>
-        <select name="key_note_select" class="Input">
+        <select name="key_note_select" class="custom-select">
             {% for o in key_note_data %}
             <option value="{{ o['key'] }}" {% if o['key'] == state.key_choice %} selected {% endif %}>{{ o['key_display'] }}</option>
             {% endfor %}
@@ -24,10 +26,11 @@
         </select>
         <div>{{ state.choice }}</div>
         <br><br>
-        <input type="submit" value="Draw" name="submit"/>
+        <button class="button-17" role="button">Draw</button>
     </form>
-
     {% endblock %}
+    <br>
+    <br>
     <br>
     {% for k, v in tab.items() %}
     <div class="tab">{{ v }}</div>

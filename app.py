@@ -1,5 +1,4 @@
 #TODO
-# - make buttons remember values (session?)
 # - logging
 # - enhance CSS
 # - add more scale types (modes)
