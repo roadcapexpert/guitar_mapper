@@ -1,0 +1,3 @@
+graft scale_chart/static
+graft scale_chart/templates
+global-exclude *.pyc
