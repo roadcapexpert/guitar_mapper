@@ -20,7 +20,7 @@ key_notes = [{"key": "A", "key_display": "A"},
              {"key": "G", "key_display": "G"},
              {"key": "G#", "key_display": "G♯ / A♭"}]
 notes = [d["key"] for d in key_notes]
-
+inlay_frets = [3, 5, 7, 9, 12, 15, 17, 19, 21]
 
 class FretBoard:
     # TODO change scale_types to use id, maybe put in database
@@ -55,6 +55,9 @@ class FretBoard:
         else:
             raise RuntimeError("Invalid root note")
 
+    # def create_fretboard2(self):
+
+
     def create_fretboard(self):
         """ Compile the fretboard """
         scale = self.compile_scale()
@@ -69,7 +72,8 @@ class FretBoard:
 
                 # add to string
                 string_so_far = self.neck[string]
-                updated_neck = string_so_far + self.create_string_tab(current_note, scale) + self.fret
+                updated_neck = string_so_far + self.create_string_tab(current_note, scale) 
+                #+ self.fret
                 self.neck[string] = updated_neck
 
             current_fret += 1
@@ -81,13 +85,16 @@ class FretBoard:
             # I wanted the root note to be a different character
             # TODO refactor to remove duplicate code below
             if note == scale[0]:
-                string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.root_tab + (
-                            self.empty_tab * (math.trunc(self.fret_width / 2)))
+                # string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.root_tab + (
+                #             self.empty_tab * (math.trunc(self.fret_width / 2)))
+                string_tab = '<span class="string-tab root note"></span>'
             else:
-                string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.note_tab + (
-                            self.empty_tab * (math.trunc(self.fret_width / 2)))
+                # string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.note_tab + (
+                #             self.empty_tab * (math.trunc(self.fret_width / 2)))
+                string_tab = '<span class="string-tab note"></span>'
         else:
-            string_tab = self.empty_tab * self.fret_width
+            # string_tab = self.empty_tab * self.fret_width
+            string_tab = '<span class="string-tab"></span>'
 
         return string_tab
 
@@ -110,7 +117,6 @@ class FretBoard:
         return scale
 
     def add_inlay_markers(self):
-        inlay_frets = [3, 5, 7, 9, 12, 15, 17, 19, 21]
         inlay_list = ["&nbsp;"] * ((self.fret_width * self.fret_num) + (self.fret_num + 1))
         for inlay in inlay_frets:
             position = math.trunc(self.fret_width * (inlay - 0.5)) + inlay
@@ -126,7 +132,7 @@ class FretBoard:
             self.neck[string] = self.fret
 
         self.create_fretboard()
-        self.add_inlay_markers()
+        # self.add_inlay_markers()
 
         # draw neck
         print(*[str(v) for k, v in self.neck.items()], sep='\n')

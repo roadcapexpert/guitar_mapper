@@ -40,7 +40,7 @@ def create_app(test_config=None):
         return render_template("index.html",
                                key_note_data=key_notes,
                                scale_type_data=scale_types,
-                               tab=fretboard.draw_neck(),
+                               string=fretboard.draw_neck(),
                                state=state)
 
     return app
