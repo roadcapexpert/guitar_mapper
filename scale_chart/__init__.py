@@ -9,10 +9,6 @@ from flask import Flask, render_template, request, current_app, g
 from flask.cli import with_appcontext
 from scale_chart.scale_chart import FretBoard, scale_types, key_notes
 
-# app = Flask(__name__)
-
-
-
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -34,8 +30,6 @@ def create_app(test_config=None):
         except OSError:
             pass
 
-
-
     @app.route("/", methods=["POST", "GET"])
     def home():
         state = ""
@@ -54,6 +48,7 @@ def create_app(test_config=None):
 
     return app
 
+
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(
@@ -64,11 +59,10 @@ def get_db():
 
     return g.db
 
+
 def close_db(e=None):
     db = g.pop("db", None)
 
     if db is not None:
         db.close()
 
-
-#    create_app()

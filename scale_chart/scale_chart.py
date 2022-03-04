@@ -1,7 +1,12 @@
 import math
 
-scale_types = [{"type": "major", "scale_steps": [2, 2, 1, 2, 2, 2, 1]},
-               {"type": "minor", "scale_steps": [2, 1, 2, 2, 1, 2, 2]}]
+scale_types = [{"type": "Major (Ionian)", "scale_steps": [2, 2, 1, 2, 2, 2, 1]},
+               {"type": "Minor (Aeolian)", "scale_steps": [2, 1, 2, 2, 1, 2, 2]},
+               {"type": "Dorian", "scale_steps": [2, 1, 2, 2, 2, 1, 2]},
+               {"type": "Phrygian", "scale_steps": [1, 2, 2, 2, 1, 2, 2]},
+               {"type": "Lydian", "scale_steps": [2, 2, 2, 1, 2, 2, 1]},
+               {"type": "Mixolydian", "scale_steps": [2, 2, 1, 2, 2, 1, 2]},
+               {"type": "Locrian", "scale_steps": [1, 2, 2, 1, 2, 2, 2]}]
 key_notes = [{"key": "A", "key_display": "A"},
              {"key": "A#", "key_display": "A♯ / B♭"},
              {"key": "B", "key_display": "B"},
@@ -18,8 +23,8 @@ notes = [d["key"] for d in key_notes]
 
 
 class FretBoard:
-
-    def __init__(self, key_note="A", scale_type="major", fret_num=22):
+    #TODO change scale_types to use id, maybe put in database
+    def __init__(self, key_note="A", scale_type="Major (Ionian)", fret_num=22):
         self.fret = "|"
         self.note_tab = "0"
         self.root_tab = "X"
