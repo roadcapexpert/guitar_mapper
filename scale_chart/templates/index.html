@@ -29,12 +29,10 @@
         <button class="button-17" role="button">Draw</button>
     </form>
     {% endblock %}
-    <br>
-    <br>
-    <br>
+    <div class="fretboard">
     {% for k, v in tab.items() %}
     <div class="tab">{{ v|safe }}</div>
-    <br>
     {% endfor %}
+    </div>
 </body>
 </html>
