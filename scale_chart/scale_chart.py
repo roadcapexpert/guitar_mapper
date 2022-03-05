@@ -20,7 +20,27 @@ key_notes = [{"key": "A", "key_display": "A"},
              {"key": "G", "key_display": "G"},
              {"key": "G#", "key_display": "G♯ / A♭"}]
 notes = [d["key"] for d in key_notes]
-inlay_frets = [3, 5, 7, 9, 12, 15, 17, 19, 21]
+inlay_frets = [0, 3, 5, 7, 9, 12, 15, 17, 19, 21]
+
+def get_tuning_html(note):
+    return '<span class="string-tuning">' + note + '</span>'
+
+def get_string_tab_html(note, is_note, is_root, is_inlay):
+    html = '<span class="string-tab'
+    if is_note:
+        html = html + ' note'
+    if is_root:
+        html = html + ' root'
+    if is_inlay:
+        html = html + ' inlay'
+    html = html + '">'
+
+    if is_note:
+        html = html + '<span class="note-indicator">' + note + '</span>'
+    else:
+        html = html + '&nbsp;'
+    html = html + '</span>'
+    return html
 
 class FretBoard:
     # TODO change scale_types to use id, maybe put in database
@@ -55,9 +75,6 @@ class FretBoard:
         else:
             raise RuntimeError("Invalid root note")
 
-    # def create_fretboard2(self):
-
-
     def create_fretboard(self):
         """ Compile the fretboard """
         scale = self.compile_scale()
@@ -68,18 +85,22 @@ class FretBoard:
                 # determine current note
                 open_note = self.tuning[string]
                 open_note_index = notes.index(open_note)
-                current_note = notes[(open_note_index + current_fret + 1) % len(notes)]
+                current_note = notes[(open_note_index + current_fret #+ 1
+                                      ) % len(notes)]
 
                 # add to string
                 string_so_far = self.neck[string]
-                updated_neck = string_so_far + self.create_string_tab(current_note, scale) 
+                updated_neck = string_so_far + self.create_string_tab(current_fret, current_note, scale)
                 #+ self.fret
                 self.neck[string] = updated_neck
 
             current_fret += 1
 
-    def create_string_tab(self, note, scale):
+    def create_string_tab(self, fret, note, scale):
         """ Checks if note is in scale and creates the string drawing """
+        is_note = False
+        is_root = False
+        is_inlay = False
 
         if note in scale:
             # I wanted the root note to be a different character
@@ -87,16 +108,27 @@ class FretBoard:
             if note == scale[0]:
                 # string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.root_tab + (
                 #             self.empty_tab * (math.trunc(self.fret_width / 2)))
-                string_tab = '<span class="string-tab root note"></span>'
+                # string_tab = '<span class="string-tab root note"></span>'
+                classes = ' root note fret-' + str(fret)
+                is_note = True
+                is_root = True
             else:
                 # string_tab = (self.empty_tab * (math.trunc(self.fret_width / 2))) + self.note_tab + (
                 #             self.empty_tab * (math.trunc(self.fret_width / 2)))
-                string_tab = '<span class="string-tab note"></span>'
+                # string_tab = '<span class="string-tab note"></span>'
+                classes = ' note fret-' + str(fret)
+                is_note = True
         else:
-            # string_tab = self.empty_tab * self.fret_width
-            string_tab = '<span class="string-tab"></span>'
+            # # string_tab = self.empty_tab * self.fret_width
+            # string_tab = '<span class="string-tab"></span>'
+            classes = ' fret-' + str(fret)
 
-        return string_tab
+        if fret in inlay_frets:
+            classes = classes + ' inlay'
+            is_inlay = True
+
+        return get_string_tab_html(note, is_note, is_root, is_inlay)
+        # return '<span class="string-tab' + classes + '"></span>'
 
     def compile_scale(self):
         """ Determines the notes in the scale for a given key """
@@ -126,10 +158,9 @@ class FretBoard:
 
     def draw_neck(self):
         """ Does the actual drawing of the neck """
-
-        # draw the nut
+        # draw the tuning of each string
         for string in self.neck:
-            self.neck[string] = self.fret
+            self.neck[string] = get_tuning_html(self.tuning[string]) #self.fret
 
         self.create_fretboard()
         # self.add_inlay_markers()
