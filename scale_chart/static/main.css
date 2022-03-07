@@ -1,6 +1,6 @@
 html {
-    /* height: 100%; */
-    background: linear-gradient(0deg, rgb(128 0 128 / 50%), rgb(255 165 0 / 70%));
+    height: 100%;
+    background: linear-gradient(0deg, rgb(100 150 150 / 50%), rgb(40 130 100 / 70%));
     background-repeat: no-repeat;
 }
 
@@ -31,17 +31,56 @@ form {
     font-size: .85vw;
     display: flex;
     justify-content: space-between;
-    /* line-height: 24px; */
     position: relative;
     align-items: center;
     margin: 12px 0px;
 }
+@media screen and (min-width: 2000px) {
+  .string {
+    font-size: 15px;
+    font-family: monospace, monospace;
+    font-weight: bold;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+    margin: 12px 0px;
+  }
+}
+
 
 .string .string-tuning {
     flex: 1;
     text-align: center;
-    font-size: 1.4em;
+    font-size: 1.3em;
+    display: flex;
+    justify-content: center;
 }
+
+
+span.string-tuning>.note-indicator {
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+span.string-tuning.note .note-indicator {
+    color: white;
+    background: black;
+}
+
+
+span.string-tuning.note.root .note-indicator {
+    color: white;
+    background: red;
+}
+
 
 span.string-tab {
     background: lightgray;
