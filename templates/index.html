@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scale Chart</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='guitar-solid.svg') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+</head>
+<body>
+    <h1 class="title">Scale Chart</h1>
+    <!--{% block title %}Options{% endblock %}-->
+    {% block content %}
+    {% endblock %}
+    <div class="fretboard">
+    {% for k, v in string.items() %}
+    <div class="string">{{ v|safe }}</div>
+    {% endfor %}
+    </div>
+
+    <form method="post" action="#" class="form-1">
+        <label>Choose a key:</label>
+        <select name="key_note_select" class="custom-select">
+            {% for o in key_note_data %}
+            <option value="{{ o['key'] }}" {% if o['key'] == state.key_choice %} selected {% endif %}>{{ o['key_display'] }}</option>
+            {% endfor %}
+        </select>
+        <select name="scale_type_select" class="Input">
+            {% for o in scale_type_data %}
+            <option value="{{ o['type'] }}" {% if o['type'] == state.scale_choice %} selected {% endif %}>{{ o['type'] }}</option>
+            {% endfor %}
+        </select>
+        <div>{{ state.choice }}</div>
+        <br><br>
+        <button class="button-17" role="button">Draw</button>
+        <br><br>
+    </form>
+</body>
+</html>

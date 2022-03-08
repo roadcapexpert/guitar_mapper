@@ -1,5 +1,30 @@
-from scale_chart import create_app
+from flask import Flask, render_template, request
+from scale_chart import FretBoard, scale_types, key_notes
 
-if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True, host="0.0.0.0", port=4545)
+
+def create_app():
+    app = Flask(__name__)
+
+    @app.route("/", methods=["POST", "GET"])
+    def home():
+        state = ""
+        if request.method == "POST":
+            key_note_input = request.form["key_note_select"]
+            scale_type_input = request.form["scale_type_select"]
+            state = {'scale_choice': scale_type_input, 'key_choice': key_note_input}
+            fretboard = FretBoard(key_note=key_note_input, scale_type=scale_type_input)
+        else:
+            fretboard = FretBoard()
+        return render_template("index.html",
+                               key_note_data=key_notes,
+                               scale_type_data=scale_types,
+                               string=fretboard.draw_neck(),
+                               state=state)
+
+    return app
+
+
+app = create_app()
+#if __name__ == '__main__':
+    # flask_app = create_app()
+    # flask_app.run(debug=True, host="0.0.0.0", port=4545)
